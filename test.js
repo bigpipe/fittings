@@ -24,17 +24,23 @@ describe('fittings', function () {
       }), f = new Framework();
 
       assume(f.get('library')).has.length(1);
-      assume(f.get('library')[0]).equals(require.resolve('./test.js'));
+      assume(f.get('library')[0]).deep.equals({
+        path: require.resolve('./test.js'),
+        expose: 'test'
+      });
     });
 
     it('executes the library function', function () {
       var Framework = Fittings.extend({
         library: function () {
-          return [1];
+          return ['1'];
         }
       }), f = new Framework();
 
-      assume(f.get('library')[0]).equals(1);
+      assume(f.get('library')[0]).deep.equals({
+        path: '1',
+        expose: '1'
+      });
     });
 
     it('leaves arrays alone for now', function () {
@@ -43,7 +49,10 @@ describe('fittings', function () {
       }), f = new Framework();
 
       assume(f.get('library')).has.length(1);
-      assume(f.get('library')[0]).equals('./test.js');
+      assume(f.get('library')[0]).deep.equals({
+        path: './test.js',
+        expose: 'test'
+      });
     });
 
     it('will replace {fittings:tags}', function fn() {
