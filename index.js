@@ -59,13 +59,35 @@ Fittings.prototype.get = function get(what, data) {
 Fittings.prototype.resolve = function resolve(what) {
   what = this[what];
 
+  /**
+   * As the libraries as run through browserify it makes sense to give them
+   * a custom export name. When it's an object we assume that they already
+   * follow our required structure. If this is not the case we use the filename
+   * as the name it should be exposed under.
+   *
+   * @param {String|Object} where Either the location of a file or object.
+   * @returns {Object}
+   * @api private
+   */
+  function makeitso(where) {
+    if ('string' === typeof where) {
+      where = {
+        expose: path.basename(where).replace(new RegExp(path.extname(where).replace('.', '\\.') +'$'), ''),
+        path: where
+      };
+    }
+
+    return where;
+  }
+
   var type = typeof what;
 
-  if (Array.isArray(what)) return what;
-  if ('function' === type) return what();
-  if ('string' === type && what.charAt(0) === path.sep) return [what];
+  if (Array.isArray(what)) return what.map(makeitso);
+  if ('function' === type) return what().map(makeitso);
+  if ('string' === type && what.charAt(0) === path.sep) return [what].map(makeitso);
+  if ('object'=== type) return [what].map(makeitso);
 
-  return [require.resolve(what)];
+  return [require.resolve(what)].map(makeitso);
 };
 
 /**
