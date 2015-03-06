@@ -101,10 +101,12 @@ Fittings.prototype.resolve = function resolve(what) {
 Fittings.prototype.evaluate = function evaluate(what, data) {
   if ('function' === typeof this[what]) return this[what](data);
 
-  what = this[what];
+  what = this[what].replace(/\$/, '\$');
 
   Object.keys(data).forEach(function each(key) {
-    what = what.replace('{fittings:'+ key +'}', data[key]);
+    what = what.replace('{fittings:'+ key +'}', function hack() {
+      return data[key];
+    });
   });
 
   return what;

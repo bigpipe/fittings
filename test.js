@@ -112,5 +112,21 @@ describe('fittings', function () {
 
       assume(f.get('template', data)).equals('foo');
     });
+
+    it('leaves $ signs alone', function () {
+      function example() {
+        if (!('$' in global)) return;
+
+        console.log($);
+      }
+
+      var Framework = Fittings.extend({
+        library: ['./test.js'],
+        template: 'global[{fittings:hash}] = {fittings:client};'
+      }), f = new Framework()
+      , data = { hash: '"moo"', client: example.toString() };
+
+      assume(f.get('template', data)).includes("'$'");
+    });
   });
 });
