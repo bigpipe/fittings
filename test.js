@@ -1,11 +1,31 @@
 describe('fittings', function () {
   'use strict';
 
+  process.env.DIAGNOSTICS = 'fittings';
+
   var Fittings = require('./')
     , assume = require('assume');
 
   it('is exported as a function', function () {
     assume(Fittings).is.a('function');
+  });
+
+  it('writes to stdout when calling a method that is not overrided', function (next) {
+    var write = process.stdout.write;
+
+    process.stdout.write = function (data) {
+      process.stdout.write = write;
+
+      assume(data).includes('Missing override');
+      assume(data).includes('`.template`');
+
+      next();
+    };
+
+    var framework = new Fittings();
+
+    framework.get('library');
+    framework.get('template');
   });
 
   describe("#get", function () {
@@ -55,14 +75,42 @@ describe('fittings', function () {
       });
     });
 
-    it('will replace {fittings:tags}', function fn() {
+    it('accepts objects', function () {
+      var Framework = Fittings.extend({
+        library: { path: './test.js', expose: 'moo' }
+      }), f = new Framework();
+
+      assume(f.get('library')).has.length(1);
+      assume(f.get('library')[0]).deep.equals({
+        path: './test.js',
+        expose: 'moo'
+      });
+    });
+
+    it('will replace {fittings:tags}', function () {
+      /* istanbul ignore next */
+      function woop(){ console.log('lol'); }
+
       var Framework = Fittings.extend({
         library: ['./test.js'],
         template: 'global[{fittings:hash}] = {fittings:client};'
       }), f = new Framework()
-      , data = { hash: '"moo"', client: fn.toString() };
+      , data = { hash: '"moo"', client: woop.toString() };
 
-      assume(f.get('template', data)).equals('global["moo"] = '+ fn.toString() +';');
+      assume(f.get('template', data)).equals('global["moo"] = '+ woop.toString() +';');
+    });
+
+    it('assumes that functions replace stuff them selfs', function () {
+      var Framework = Fittings.extend({
+        library: ['./test.js'],
+        template: function (dataset) {
+          assume(dataset).deep.equals(data);
+          return 'foo';
+        }
+      }), f = new Framework()
+      , data = { what: 'ever', data: 'you', want: 'here' };
+
+      assume(f.get('template', data)).equals('foo');
     });
   });
 });

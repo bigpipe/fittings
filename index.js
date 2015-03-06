@@ -152,7 +152,7 @@ Fittings.prototype.fragment = warn('Missing override for the `.fragment` propert
  * @type {String|Array}
  * @public
  */
-Fittings.prototype.library = '';
+Fittings.prototype.library = [];
 
 /**
  * Extend the library, if needed.
