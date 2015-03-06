@@ -124,14 +124,15 @@ rendering. It has the following template tags available:
 - `{fittings:data}` Additional state and data that the pagelet has generated
   which should be synced to the client. See the pagelet's internal render method
   for all JSON it's returning.
+- `{fittings:state}` The state that needs to be synced from server to client.
 
 An example template could be:
 
 ```html
 <script type="pagelet/html" name={fittings:name} id={fittings:id}>
-{fittings:template}
+  {fittings:template}
 </script>
-<script>render({fittings:data});</script>
+<script>render({fittings:data}, {fittings:state});</script>
 ```
 
 #### fittings.library
