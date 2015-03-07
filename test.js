@@ -129,4 +129,94 @@ describe('fittings', function () {
       assume(f.get('template', data)).includes("'$'");
     });
   });
+
+  describe('.template', function () {
+    it('returns a string', function () {
+      var Framework = Fittings.extend({
+        template: 'woop'
+      }), f = new Framework();
+
+      assume(f.get('template')).is.a('string');
+      assume(f.get('template')).equals('woop');
+    });
+  });
+
+  describe('.plugin', function () {
+    it('returns a string', function () {
+      var Framework = Fittings.extend({
+        plugin: 'woop'
+      }), f = new Framework();
+
+      assume(f.get('plugin')).is.a('string');
+      assume(f.get('plugin')).equals('woop');
+    });
+  });
+
+  describe('.bootstrap', function () {
+    it('returns a string', function () {
+      var Framework = Fittings.extend({
+        bootstrap: 'woop'
+      }), f = new Framework();
+
+      assume(f.get('bootstrap')).is.a('string');
+      assume(f.get('bootstrap')).equals('woop');
+    });
+  });
+
+  describe('.fragment', function () {
+    it('returns a string', function () {
+      var Framework = Fittings.extend({
+        fragment: 'woop'
+      }), f = new Framework();
+
+      assume(f.get('fragment')).is.a('string');
+      assume(f.get('fragment')).equals('woop');
+    });
+  });
+
+  describe('.library', function () {
+    it('returns an array', function () {
+      var Framework = Fittings.extend({
+        library: function () { return []; }
+      }), f = new Framework();
+
+      assume(f.get('library')).is.a('array');
+    });
+  });
+
+  describe('.middleware', function () {
+    it('returns an object for functions', function () {
+      var Framework = Fittings.extend({
+        middleware: function () { return {}; }
+      }), f = new Framework();
+
+      assume(f.get('middleware')).is.a('object');
+    });
+
+    it('returns an object', function () {
+      var Framework = Fittings.extend({
+        middleware: {}
+      }), f = new Framework();
+
+      assume(f.get('middleware')).is.a('object');
+    });
+  });
+
+  describe('.use', function () {
+    it('returns an object for functions', function () {
+      var Framework = Fittings.extend({
+        use: function () { return {}; }
+      }), f = new Framework();
+
+      assume(f.get('use')).is.a('object');
+    });
+
+    it('returns an object', function () {
+      var Framework = Fittings.extend({
+        use: {}
+      }), f = new Framework();
+
+      assume(f.get('use')).is.a('object');
+    });
+  });
 });

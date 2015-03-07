@@ -95,11 +95,15 @@ Fittings.prototype.resolve = function resolve(what) {
  *
  * @param {String} what Property name that should either be a fn or string.
  * @param {Object} data Data that can be introduced.
- * @return {String}
+ * @return {String|Object}
  * @api private
  */
 Fittings.prototype.evaluate = function evaluate(what, data) {
-  if ('function' === typeof this[what]) return this[what](data);
+  var type = typeof this[what];
+  data = data || {};
+
+  if ('function' === type) return this[what](data);
+  if ('object' === type) return this[what];
 
   what = this[what].replace(/\$/, '\$');
 
@@ -155,6 +159,22 @@ Fittings.prototype.fragment = warn('Missing override for the `.fragment` propert
  * @public
  */
 Fittings.prototype.library = [];
+
+/**
+ * The various of middleware layers that need to be loaded in to the server.
+ *
+ * @type {Object}
+ * @public
+ */
+Fittings.prototype.middleware = {};
+
+/**
+ * The plugins that need to be executed on the server/client.
+ *
+ * @type {Object}
+ * @public
+ */
+Fittings.prototype.use = {};
 
 /**
  * Extend the library, if needed.
