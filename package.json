@@ -1,6 +1,6 @@
 {
   "name": "fittings",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Framework provider for BigPipe",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/bigpipe/fittings",
   "dependencies": {
-    "diagnostics": "0.0.4",
+    "diagnostics": "0.0.x",
     "extendible": "0.1.x"
   },
   "devDependencies": {
