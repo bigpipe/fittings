@@ -22,9 +22,10 @@ function warn(reason) {
  * Fittings is the default framework provider for BigPipe.
  *
  * @constructor
+ * @param {BigPipe} bigpipe
  * @api public
  */
-function Fittings() {
+function Fittings(bigpipe) {
   /* Checkout http://github.com/bigpipe/bigpipe.js for example usage */
 }
 
