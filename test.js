@@ -233,6 +233,7 @@ describe('fittings', function () {
       });
 
       app.once('listening', next);
+      app.once('error', next);
     });
 
     afterEach(function () {
