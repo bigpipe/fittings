@@ -224,13 +224,15 @@ describe('fittings', function () {
     var port = 2024
       , app;
 
+    this.timeout(30000);
+
     beforeEach(function (next) {
       app = require('bigpipe').createServer({
         dist: '/tmp/dist',
         port: port++,
       });
 
-      app.once('listening', next)
+      app.once('listening', next);
     });
 
     afterEach(function () {
