@@ -6,6 +6,8 @@ node_js:
   - "iojs"
 before_install:
   - "npm install -g npm@2.1.18"
+before_script:
+  - "rm -rf node_modules/bigpipe/node_modules/bigpipe.js && npm install bigpipe/bigpipe.js"
 script:
   - "npm run test-travis"
 after_script:
