@@ -25,11 +25,14 @@
   },
   "homepage": "https://github.com/bigpipe/fittings",
   "dependencies": {
+    "demolish": "1.0.x",
     "diagnostics": "0.0.x",
-    "extendible": "0.1.x"
+    "extendible": "0.1.x",
+    "ultron": "1.0.x"
   },
   "devDependencies": {
     "assume": "1.1.x",
+    "bigpipe": "bigpipe/bigpipe",
     "istanbul": "0.3.x",
     "mocha": "2.1.x",
     "pre-commit": "1.0.x"

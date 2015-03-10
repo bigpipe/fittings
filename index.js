@@ -1,7 +1,8 @@
 'use strict';
 
 var debug = require('diagnostics')('fittings')
-  , read = require('fs').readFileSync
+  , destroy = require('demolish')
+  , Ultron = require('ultron')
   , path = require('path');
 
 /**
@@ -26,7 +27,10 @@ function warn(reason) {
  * @api public
  */
 function Fittings(bigpipe) {
-  /* Checkout http://github.com/bigpipe/bigpipe.js for example usage */
+  this.ultron = new Ultron(bigpipe);
+  this.bigpipe = bigpipe;
+
+  this.setup();
 }
 
 /**
@@ -36,6 +40,38 @@ function Fittings(bigpipe) {
  * @private
  */
 Fittings.prototype.directory = '';
+
+/**
+ * Assign all our custom hooks in to the BigPipe framework.
+ *
+ * @api private
+ */
+Fittings.prototype.setup = function setup() {
+  var middleware = this.get('middleware')
+    , plugins = this.get('use')
+    , events = this.get('on');
+
+  //
+  // Introduce the middleware layers that we've added.
+  //
+  Object.keys(middleware).forEach(function each(name) {
+    this.middleware.use(name, middleware[name]);
+  }, this.bigpipe);
+
+  //
+  // Adding all the plugins.
+  //
+  Object.keys(plugins).forEach(function each(name) {
+    this.use(name, plugins[name]);
+  }, this.bigpipe);
+
+  //
+  // And listen to all the events.
+  //
+  Object.keys(events).forEach(function each(name) {
+    this.on(name, events[event]);
+  }, this.ulron);
+};
 
 /**
  * Get one of the properties.
@@ -176,6 +212,42 @@ Fittings.prototype.middleware = {};
  * @public
  */
 Fittings.prototype.use = {};
+
+/**
+ * EventEmitters.
+ *
+ * @type {Object}
+ * @public
+ */
+Fittings.prototype.on = {};
+
+/**
+ * Completely destroy the fittings instance and remove all of it's added
+ * resources from the server (where possible).
+ *
+ * @api public
+ */
+Fittings.prototype.destroy = destroy('ultron', {
+  before: function before() {
+    var middleware = this.get('middleware');
+
+    //
+    // Manually remove the middleware, we cannot remove plugins as there is no
+    // API for it and no way to "un-evaluate" the server side executed parts of
+    // it.
+    //
+    Object.keys(middleware).forEach(function (name) {
+      this.middleware.remove(name);
+    }, this.bigpipe);
+
+    //
+    // Also manually nuke the `bigpipe` property or `demolish` with call the
+    // destroy method on `bigpipe` causing you to also completely destroy the
+    // server when you switch frameworks.
+    //
+    this.bigpipe = null;
+  }
+});
 
 /**
  * Extend the library, if needed.

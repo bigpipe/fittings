@@ -219,4 +219,55 @@ describe('fittings', function () {
       assume(f.get('use')).is.a('object');
     });
   });
+
+  describe('integration', function () {
+    var port = 2024
+      , app;
+
+    beforeEach(function (next) {
+      app = require('bigpipe').createServer({
+        dist: '/tmp/dist',
+        port: port++,
+      });
+
+      app.once('listening', next)
+    });
+
+    afterEach(function () {
+      app.destroy();
+    });
+
+    it('automatically adds the set middleware', function () {
+      /* istanbul ignore next */
+      function middleware(req, res, next) {
+        next();
+      }
+
+      var Framework = Fittings.extend({
+        middleware: {
+          foo: middleware
+        }
+      });
+
+      assume(app.middleware.indexOf('foo')).equals(-1);
+      assume(app.framework(Framework)).equals(app);
+      assume(app._framework).is.instanceOf(Framework);
+      assume(app.middleware.indexOf('foo')).does.not.equal(-1);
+    });
+
+    it('automatically adds the set plugin', function (next) {
+      var Framework = Fittings.extend({
+        use: {
+          hello: {
+            server: function (server) {
+              assume(app).equals(server);
+              next();
+            }
+          }
+        }
+      });
+
+      assume(app.framework(Framework)).equals(app);
+    });
+  });
 });
