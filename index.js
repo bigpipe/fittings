@@ -145,6 +145,13 @@ Fittings.prototype.evaluate = function evaluate(what, data) {
   what = this[what].replace(/\$/, '\$');
 
   Object.keys(data).forEach(function each(key) {
+    //
+    // The reason that we're doing a function based replace is that to replacing
+    // value can contain $' which is actually telling the regular expression
+    // engine to copy and paste all the things to the back of string instead of
+    // replacing it. All it needs a simple `if ('$' in global)` to completely
+    // mess up the replacement.
+    //
     what = what.replace('{fittings:'+ key +'}', function hack() {
       return data[key];
     });
