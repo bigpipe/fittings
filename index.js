@@ -120,7 +120,7 @@ Fittings.prototype.resolve = function resolve(what) {
   var type = typeof what;
 
   if (Array.isArray(what)) return what.map(makeitso);
-  if ('function' === type) return what().map(makeitso);
+  if ('function' === type) return what.call(this).map(makeitso);
   if ('string' === type && what.charAt(0) === path.sep) return [what].map(makeitso);
   if ('object'=== type) return [what].map(makeitso);
 
@@ -139,7 +139,7 @@ Fittings.prototype.evaluate = function evaluate(what, data) {
   var type = typeof this[what];
   data = data || {};
 
-  if ('function' === type) return this[what](data);
+  if ('function' === type) return this[what].call(this, data);
   if ('object' === type) return this[what];
 
   what = this[what].replace(/\$/, '\$');
