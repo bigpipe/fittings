@@ -6,6 +6,14 @@ describe('fittings', function () {
   var Fittings = require('./')
     , assume = require('assume');
 
+  //
+  // All Fitting instances require a `name` attribute. Instead of adding it to
+  // each test, we just pre-define it on our customized fittings instance.
+  //
+  Fittings = Fittings.extend({
+    name: 'fixture'
+  });
+
   it('is exported as a function', function () {
     assume(Fittings).is.a('function');
   });
@@ -127,6 +135,24 @@ describe('fittings', function () {
       , data = { hash: '"moo"', client: example.toString() };
 
       assume(f.get('template', data)).includes("'$'");
+    });
+
+    it('executes the set functions with context set to fittings', function (next) {
+      var Framework = Fittings.extend({
+        library: function () {
+          assume(this).equals(f);
+          next();
+
+          return __filename;
+        },
+        template: function (dataset) {
+          assume(this).equals(f);
+
+          return f.get('library')[0].expose;
+        }
+      }), f = new Framework();
+
+      assume(f.get('template')).equals('test');
     });
   });
 

@@ -15,6 +15,7 @@ var debug = require('diagnostics')('fittings')
 function warn(reason) {
   return function warning() {
     debug(reason);
+
     return '';
   };
 }
@@ -27,6 +28,9 @@ function warn(reason) {
  * @api public
  */
 function Fittings(bigpipe) {
+  if (!this) return new Fittings(Fittings);
+  if (!this.name) throw new Error('The fittings.name property is required.');
+
   this.ultron = new Ultron(bigpipe);
   this.bigpipe = bigpipe;
 
@@ -94,7 +98,7 @@ Fittings.prototype.get = function get(what, data) {
  * @api private
  */
 Fittings.prototype.resolve = function resolve(what) {
-  what = this[what];
+  what = this[what] || what;
 
   /**
    * As the libraries as run through browserify it makes sense to give them
@@ -120,7 +124,7 @@ Fittings.prototype.resolve = function resolve(what) {
   var type = typeof what;
 
   if (Array.isArray(what)) return what.map(makeitso);
-  if ('function' === type) return what.call(this).map(makeitso);
+  if ('function' === type) return resolve.call(this, what.call(this));
   if ('string' === type && what.charAt(0) === path.sep) return [what].map(makeitso);
   if ('object'=== type) return [what].map(makeitso);
 
