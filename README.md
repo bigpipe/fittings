@@ -18,6 +18,18 @@ BigPipe. It allows you to control:
 - Bootstrap the loading of the page.
 - Control the structure of the HTML fragments that are written.
 
+## Table of Contents
+
+- [Install](#install)
+- [Usage](#usage)
+  - [Processing](#processing)
+    - [fittings.template](#fittingstemplate)
+    - [fittings.plugins](#fittingsplugins)
+    - [fittings.bootstrap](#fittingsbootstrap)
+    - [fittings.fragment](#fittingsfragment)
+    - [fittings.library](#fittingslibrary)
+- [License](#license)
+
 ## Install
 
 This module is intended for server-side usage and is released in the public npm
