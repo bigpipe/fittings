@@ -148,7 +148,7 @@ Fittings.prototype.replace = function replace(what, data) {
     // replacing it. All it needs a simple `if ('$' in global)` to completely
     // mess up the replacement.
     //
-    what = what.replace('{fittings:'+ key +'}', function hack() {
+    what = what.replace(new RegExp('{fittings:'+ key +'}', 'g'), function hack() {
       return data[key];
     });
   });

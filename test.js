@@ -108,6 +108,18 @@ describe('fittings', function () {
       assume(f.get('template', data)).equals('global["moo"] = '+ woop.toString() +';');
     });
 
+    it('will replace multiple occurrences', function () {
+      /* istanbul ignore next */
+      function woop(){ console.log('lol'); }
+
+      var Framework = Fittings.extend({
+        template: '{fittings:hash} {fittings:hash}'
+      }), f = new Framework()
+      , data = { hash: '"moo"' };
+
+      assume(f.get('template', data)).equals('"moo" "moo"');
+    });
+
     it('assumes that functions replace stuff them selfs', function () {
       var Framework = Fittings.extend({
         library: ['./test.js'],
