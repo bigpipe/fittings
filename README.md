@@ -28,6 +28,8 @@ BigPipe. It allows you to control:
     - [fittings.bootstrap](#fittingsbootstrap)
     - [fittings.fragment](#fittingsfragment)
     - [fittings.library](#fittingslibrary)
+  - [API](#API)
+    - [fittings.get](#fittingsget)
 - [License](#license)
 
 ## Install
@@ -41,13 +43,25 @@ npm install --save fittings
 
 ## Usage
 
+This part of the documentation focuses on implementing, adding a new Framework
+for the BigPipe framework. To create your own framework you need to extend the
+returned Fittings class as seen in the following example:
+
 ```js
 var Fittings = require('fittings');
 
-module.exports = Fittings.extend({
+Fittings.extend({
   template: 'foo.bar[{fittings:hash}] = {fittings:client};',
-});
+}).on(module);
 ```
+
+The `.on(module)` automatically registers framework for you on the module so you
+don't need add `module.exports = ..` anymore. We also use it to extract the
+current directory of your file so we can do relative file lookups etc.
+
+To understand how you can specify the framework you need to know how we process
+your instructions and which properties are used by BigPipe and what each
+property does.
 
 ### Processing
 
@@ -71,6 +85,26 @@ completely different way:
 - Last case, it will attempt to the module systems module resolving method
   (`require.resolve`) on the string to get the absolute path for the given
   module.
+
+Please do note that when you are using the **function** syntax that these
+functions will be called for every single page/pagelet that is processed by
+BigPipe. So try to keep these methods as light and fast as possible.
+
+The template tags that we're using should be prefixed with `{fittings:` then the
+name of the property you want to add here and finally closing with the `}`
+again.
+
+```
+{fittings:name}
+```
+
+Will output:
+
+```
+john
+```
+
+If the supplied data object contains `{ name: 'john' }`.
 
 #### fittings.template
 
@@ -166,6 +200,29 @@ Fittings.extend({
     expose: 'woop'
   }
 });
+```
+
+### API
+
+The library provides a small API for processing all the specified processing
+instructions.
+
+#### fittings.get
+
+This method processes the set instructions for the given property name. If it's
+a function it will execute it, if it's a string it will replace all the things
+etc. The method accepts 2 arguments:
+
+1. `property` The name of the property you want to have processed.
+2. `data` Optional data object which will be passed in the processing function
+   or used as replacement content for the `{fitting:*}` tags.
+
+```js
+var Framework = Fittings.extend({
+  template: ..
+});
+
+var f = new Framework(bigpipe);
 ```
 
 ## License
