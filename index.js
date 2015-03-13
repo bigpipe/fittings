@@ -1,6 +1,7 @@
 'use strict';
 
 var debug = require('diagnostics')('fittings')
+  , replaces = require('replaces')
   , destroy = require('demolish')
   , Ultron = require('ultron')
   , path = require('path');
@@ -138,25 +139,7 @@ Fittings.prototype.resolve = function resolve(what) {
  * @type {RegExp}
  * @api public
  */
-Fittings.prototype.tag = /{fittings(.)([^}]+?)}/g;
-
-/**
- * Replace all the {fitting:*} values in side the supplied template string.
- *
- * @param {String} what Template that needs to be replaced.
- * @param {Object} data Template data.
- * @returns {String} Computed template string
- * @api private
- */
-Fittings.prototype.replace = function replaces(what, data) {
-  return what.replace(this.tag, function replace(tag, modifier, key) {
-    switch (modifier) {
-      case ':':
-      default:
-        return data[key];
-    }
-  });
-};
+Fittings.prototype.tag = /{fittings(\W+)([^}]+?)}/g;
 
 /**
  * Either evaluate a function or template a string.
@@ -173,7 +156,7 @@ Fittings.prototype.evaluate = function evaluate(what, data) {
   if ('function' === type) return this[what].call(this, data);
   if ('object' === type) return this[what];
 
-  return this.replace(this[what], data);
+  return replaces(this[what], this.tag, data);
 };
 
 /**
