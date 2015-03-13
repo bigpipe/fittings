@@ -146,7 +146,7 @@ Fittings.prototype.evaluate = function evaluate(what, data) {
   if ('function' === type) return this[what].call(this, data);
   if ('object' === type) return this[what];
 
-  what = this[what].replace(/\$/, '\$');
+  what = this[what];
 
   Object.keys(data).forEach(function each(key) {
     //
