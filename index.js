@@ -148,8 +148,8 @@ Fittings.prototype.tag = /{fittings(.)([^}]+?)}/g;
  * @returns {String} Computed template string
  * @api private
  */
-Fittings.prototype.replaces = function replaces(what, data) {
-  return what.replace(tag, function replace(tag, modifier, key) {
+Fittings.prototype.replace = function replaces(what, data) {
+  return what.replace(this.tag, function replace(tag, modifier, key) {
     switch (modifier) {
       case ':':
       default:
