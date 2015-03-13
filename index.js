@@ -132,22 +132,14 @@ Fittings.prototype.resolve = function resolve(what) {
 };
 
 /**
- * Either evaluate a function or template a string.
+ * Replace all the {fitting:*} values in side the supplied template string.
  *
- * @param {String} what Property name that should either be a fn or string.
- * @param {Object} data Data that can be introduced.
- * @return {String|Object}
+ * @param {String} what Template that needs to be replaced.
+ * @param {Object} data Template data.
+ * @returns {String} Computed template string
  * @api private
  */
-Fittings.prototype.evaluate = function evaluate(what, data) {
-  var type = typeof this[what];
-  data = data || {};
-
-  if ('function' === type) return this[what].call(this, data);
-  if ('object' === type) return this[what];
-
-  what = this[what];
-
+Fittings.prototype.replace = function replace(what, data) {
   Object.keys(data).forEach(function each(key) {
     //
     // The reason that we're doing a function based replace is that to replacing
@@ -162,6 +154,24 @@ Fittings.prototype.evaluate = function evaluate(what, data) {
   });
 
   return what;
+};
+
+/**
+ * Either evaluate a function or template a string.
+ *
+ * @param {String} what Property name that should either be a fn or string.
+ * @param {Object} data Data that can be introduced.
+ * @return {String|Object}
+ * @api private
+ */
+Fittings.prototype.evaluate = function evaluate(what, data) {
+  var type = typeof this[what];
+  data = data || {};
+
+  if ('function' === type) return this[what].call(this, data);
+  if ('object' === type) return this[what];
+
+  return this.replace(this[what], data);
 };
 
 /**
