@@ -132,6 +132,15 @@ Fittings.prototype.resolve = function resolve(what) {
 };
 
 /**
+ * The Regular Expression that is used process the content. It's name spaced to
+ * fittings by default and supports various of escaping styles.
+ *
+ * @type {RegExp}
+ * @api public
+ */
+Fittings.prototype.tag = /{fittings(.)([^}]+?)}/g;
+
+/**
  * Replace all the {fitting:*} values in side the supplied template string.
  *
  * @param {String} what Template that needs to be replaced.
@@ -139,21 +148,14 @@ Fittings.prototype.resolve = function resolve(what) {
  * @returns {String} Computed template string
  * @api private
  */
-Fittings.prototype.replace = function replace(what, data) {
-  Object.keys(data).forEach(function each(key) {
-    //
-    // The reason that we're doing a function based replace is that to replacing
-    // value can contain $' which is actually telling the regular expression
-    // engine to copy and paste all the things to the back of string instead of
-    // replacing it. All it needs a simple `if ('$' in global)` to completely
-    // mess up the replacement.
-    //
-    what = what.replace(new RegExp('{fittings:'+ key +'}', 'g'), function hack() {
-      return data[key];
-    });
+Fittings.prototype.replaces = function replaces(what, data) {
+  return what.replace(tag, function replace(tag, modifier, key) {
+    switch (modifier) {
+      case ':':
+      default:
+        return data[key];
+    }
   });
-
-  return what;
 };
 
 /**
