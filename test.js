@@ -311,4 +311,20 @@ describe('fittings', function () {
       assume(app.framework(Framework)).equals(app);
     });
   });
+
+  describe('#on', function () {
+    it('exposes the `on` method', function () {
+      assume(Fittings.on).is.a('function');
+    });
+
+    it('assigns custom Fittings to module.exports', function () {
+      var x = module.exports
+        , Y = Fittings.extend({ woop: 'woop' });
+
+      assume(Y.on(module)).equals(Y);
+      assume(module.exports).equals(Y);
+
+      module.exports = x;
+    });
+  });
 });
