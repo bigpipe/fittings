@@ -74,8 +74,8 @@ Fittings.prototype.setup = function setup() {
   // And listen to all the events.
   //
   Object.keys(events).forEach(function each(name) {
-    this.on(name, events[event]);
-  }, this.ulron);
+    this.on(name, events[name]);
+  }, this.ultron);
 };
 
 /**

@@ -311,6 +311,22 @@ describe('fittings', function () {
 
       assume(app.framework(Framework)).equals(app);
     });
+
+    it('automatically adds the specified event listeners', function (next) {
+      var Framework = Fittings.extend({
+        on: {
+          woop: function woop(wat) {
+            assume(wat).equals('hi');
+            assume(this).equals(app);
+
+            next();
+          }
+        }
+      });
+
+      assume(app.framework(Framework)).equals(app);
+      app.emit('woop', 'hi');
+    });
   });
 
   describe('#on', function () {
