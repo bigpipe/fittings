@@ -134,6 +134,7 @@ describe('fittings', function () {
     });
 
     it('leaves $ signs alone', function () {
+      /* istanbul ignore next */
       function example() {
         if (!('$' in global)) return;
 
