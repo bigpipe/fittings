@@ -29,7 +29,6 @@ function warn(reason) {
  * @api public
  */
 function Fittings(bigpipe) {
-  if (!this) return new Fittings(Fittings);
   if (!this.name) throw new Error('The fittings.name property is required.');
 
   this.ultron = new Ultron(bigpipe);

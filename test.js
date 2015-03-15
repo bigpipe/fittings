@@ -3,19 +3,26 @@ describe('fittings', function () {
 
   process.env.DIAGNOSTICS = 'fittings';
 
-  var Fittings = require('./')
+  var Fittings
+    , Framework = require('./')
     , assume = require('assume');
 
   //
   // All Fitting instances require a `name` attribute. Instead of adding it to
   // each test, we just pre-define it on our customized fittings instance.
   //
-  Fittings = Fittings.extend({
+  Fittings = Framework.extend({
     name: 'fixture'
   });
 
   it('is exported as a function', function () {
     assume(Fittings).is.a('function');
+  });
+
+  it('requires a name', function () {
+    var y = Fittings.extend({ woop: 'woop' });
+
+    assume(y).throws('name');
   });
 
   it('writes to stdout when calling a method that is not overrided', function (next) {
