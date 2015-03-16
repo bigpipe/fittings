@@ -153,17 +153,16 @@ restrictions:
 #### fittings.template
 
 The template should contain a small template which introduces the templates that
-is shared between client and server. This template receives 2 tags:
+is shared between client and server. This template receives 2 properties:
 
-- `{fittings:name}` Which is the name or md5 hash of library. This name is
-  already wrapped in quotes so it's save to use as property in objects.
-- `{fittings:client}` which contains the template function that needs to be
-  added.
+- `name` Which is the name or md5 hash of library.
+- `client` which contains the template function that needs to be added (already
+  a string).
 
 An example implementation could be:
 
 ```js
-mylibrary.register({fittings:name}, {fittings:client});
+mylibrary.register({fittings~name}, {fittings:client});
 ```
 
 Which would result in to something like:
@@ -192,7 +191,7 @@ the page expects to flush out etc.
 var BigPipe = require('bigpipe')
   , pipe;
 
-pipe = new BigPipe(undefined, { pagelets: {fittings:length}, id: '{fittings:id}' });
+pipe = new BigPipe(undefined, { pagelets: {fittings:length}, id: {fittings~id} });
 </script>
 ```
 
@@ -206,23 +205,23 @@ The actual fragment that is written to the page when a pagelet is rendered.
 This is the actual HTML fragment that is written to the page once a pagelet is
 rendering. It has the following template tags available:
 
-- `{fittings:template}` The HTML string that the pagelet generated. It has all
+- `template` The HTML string that the pagelet generated. It has all
   it's HTML comments removed so it should be save be added within a HTML comment
   if needed.
-- `{fittings:name}` The name of pagelet that is flushing it's output.
-- `{fittings:id}` The unique id of this pagelet.
-- `{fittings:data}` Additional state and data that the pagelet has generated
-  which should be synced to the client. See the pagelet's internal render method
-  for all JSON it's returning.
-- `{fittings:state}` The state that needs to be synced from server to client.
+- `name` The name of pagelet that is flushing it's output.
+- `id` The unique id of this pagelet.
+- `data` Additional data object that the pagelet has generated which should be
+  synced to the client. See the Pagelet's internal render method for all various
+  of properties that this object contains.
+- `state` The state data that needs to be synced from server to client.
 
 An example template could be:
 
 ```html
-<script type="pagelet/html" name={fittings:name} id={fittings:id}>
+<script type="pagelet/html" name={fittings~name} id={fittings~id}>
   {fittings:template}
 </script>
-<script>render({fittings:data}, {fittings:state});</script>
+<script>render({fittings$data}, {fittings$state});</script>
 ```
 
 #### fittings.library
