@@ -23,11 +23,15 @@ BigPipe. It allows you to control:
 - [Install](#install)
 - [Usage](#usage)
   - [Processing](#processing)
+    - [fittings.tag](#fittingstag)
     - [fittings.template](#fittingstemplate)
     - [fittings.plugins](#fittingsplugins)
     - [fittings.bootstrap](#fittingsbootstrap)
     - [fittings.fragment](#fittingsfragment)
     - [fittings.library](#fittingslibrary)
+    - [fittings.middleware](#fittingsmiddleware)
+    - [fittings.use](#fittingsuse)
+    - [fittings.on](#fittingson)
   - [API](#API)
     - [fittings.get](#fittingsget)
 - [License](#license)
@@ -293,6 +297,19 @@ Fittings.extend({
 
 Please see the BigPipe framework documentation for the events that you can
 listen for.
+
+#### fittings.initialize
+
+When you add an initialize function to fittings it will be called once a new
+instance of the framework is created. It will receive the supplied BigPipe
+instance as argument so you unlimited control.
+
+```js
+Fittings.extend({
+  initialize: function initialize(bigpipe) {
+  }
+}).on(module);
+```
 
 ### API
 
