@@ -104,7 +104,51 @@ Will output:
 john
 ```
 
-If the supplied data object contains `{ name: 'john' }`.
+If the supplied data object contains `{ name: 'john' }`. We also support extracting deeply nested properties using a dot notation. For example:
+
+```
+{fittings:data.array.2.thing}
+```
+
+This will says we should get the `data` property, which is an object and we want
+it's `array` property. This property contains an array and we want the second
+item. The second item is also an object so we want the property `thing` as
+content.
+
+The `:` char is a special data modifier instruction the modifier is the first
+non word character that follows the fittings prefix. All our template tags are
+processed by the [replaces] module which supports a variety of data output
+modifiers:
+
+- **`{fittings<>key}`** Make sure that the data we're trying to add to the
+  template is save
+  to use inside of HTML tags.
+- **`{fittings~key}`** Transform the receiving data in to a JSON.stringify
+  structure.
+- **`{fittings@key}`** Transform the receiving data in to a JSON.stringify
+  structure
+  **without** crashing on circular references like a normal stringify operation
+  would.
+- **`{fittings$key}`** Transform the data using the circular JSON parser and
+  ensure that every value inside the JSON is encoded using the `<>` modifier.
+- **`{fittings%key}`** Escape the data using the `escape` function.
+- Any other non `\W` is just ignored and will indicated that the data should
+  just be pasted in as normal (like {fittings:key} is).
+
+You can actually change the name and syntax of these placeholders as they are
+processed using a regular expression.
+
+#### fittings.tag
+
+This is the regular expression that is used to find the special {fittings:what}
+keywords in your templates. If want to use a custom syntax you can change this
+regular expression to anything you want as long as it follows the following
+restrictions:
+
+- The first capturing group should be a modifier that is supported by the
+  [replaces] module.
+- The second capturing group is the name of the key or pattern that is used to
+  extract the data.
 
 #### fittings.template
 
@@ -231,3 +275,4 @@ MIT
 
 [bigpipe.js]: https://github.com/bigpipe/bigpipe.js
 [bootstrap]: https://github.com/bigpipe/bootstrap-pagelet
+[replaces]: https://github.com/bigpipe/replaces
