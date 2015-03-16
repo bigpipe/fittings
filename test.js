@@ -25,6 +25,19 @@ describe('fittings', function () {
     assume(y).throws('name');
   });
 
+  it('calls an optional initialize method', function (next) {
+    var XYZ = Fittings.extend({
+      initialize: function (thing) {
+        assume(this).instanceOf(XYZ);
+        assume(thing).equals('wut');
+
+        next();
+      }
+    });
+
+    var xyz = new XYZ('wut');
+  });
+
   it('writes to stdout when calling a method that is not overrided', function (next) {
     var write = process.stdout.write;
 

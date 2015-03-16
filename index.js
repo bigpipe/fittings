@@ -75,6 +75,10 @@ Fittings.prototype.setup = function setup() {
   Object.keys(events).forEach(function each(name) {
     this.on(name, events[name]);
   }, this.ultron);
+
+  if ('function' === typeof this.initialize) {
+    this.initialize(this.bigpipe);
+  }
 };
 
 /**
