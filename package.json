@@ -28,7 +28,7 @@
     "demolish": "1.0.x",
     "diagnostics": "0.0.x",
     "extendible": "0.1.x",
-    "replaces": "0.0.x",
+    "replaces": "1.0.x",
     "ultron": "1.0.x"
   },
   "devDependencies": {
