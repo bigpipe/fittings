@@ -175,16 +175,16 @@ mylibrary.register("0f8bf99b55994d676634fae81fff2405", function (data) {
 
 #### fittings.plugins
 
-Kinda the same as the template, but instead of introducing templates you're
-adding new plugins. Just like the template it has `name` and `client` template
-key.
+Kinda the same as the `fittings.template`, but instead of introducing templates
+you're adding new plugins. Just like the template, it has a `name` and `client`
+template key.
 
 #### fittings.bootstrap
 
 The bootstrap property allows you to provide a small bootstrap template which
-will be included by the [bootstrap-pagelet][bootstrap]. This template receives
-all the information of the bootstrap pagelet so you can pass the amount pagelets
-the page expects to flush out etc.
+will be included by the [bootstrap-pagelet][bootstrap] as `bootstrap` property.
+This template receives all the information of the bootstrap pagelet so you can
+pass the amount pagelets the page expects to flush out etc.
 
 ```html
 <script>
@@ -200,7 +200,8 @@ access your supplied libraries.
 
 #### fittings.fragment
 
-The actual fragment that is written to the page when a pagelet is rendered.
+This is the actual fragment that is written to the page when a pagelet is
+rendered.
 
 This is the actual HTML fragment that is written to the page once a pagelet is
 rendering. It has the following template tags available:
@@ -242,8 +243,56 @@ Fittings.extend({
     path: require('path').join(__dirname, 'lib', 'whatever.extension'),
     expose: 'woop'
   }
-});
+}).on(module);
 ```
+
+#### fittings.middleware
+
+Additional middleware layers that need to be added to the BigPipe server. This
+should be an object where the key is the name of the middleware layer and the
+value is a pre-configured middleware layer.
+
+```js
+Fittings.extend({
+  middleware: {
+    static: require('serve-static')(__dirname)
+  }
+}).on(module);
+```
+
+#### fittings.use
+
+Additional plugins that need to be added to the BigPipe server. This should be
+an object where the key is the name of the plugin and the value is the required
+plugin:
+
+```js
+Fittings.extend({
+  use: {
+    progress: require('bigpipe-progress')
+  }
+}).on(module);
+```
+
+#### fittings.on
+
+Additional event that we listen on. We assume that this is an object where the
+key is name of the event you want listen on and the value is the function that
+should be executed for it. This uses the `EventEmitter#on` method internally so
+your function will be called for each and every event.
+
+```js
+Fittings.extend({
+  on: {
+    log: function (line) {
+      console.log(line);
+    }
+  }
+}).on(module);
+```
+
+Please see the BigPipe framework documentation for the events that you can
+listen for.
 
 ### API
 
