@@ -26,16 +26,16 @@
   "homepage": "https://github.com/bigpipe/fittings",
   "dependencies": {
     "demolish": "1.0.x",
-    "diagnostics": "0.0.x",
+    "diagnostics": "~1.0.1",
     "extendible": "0.1.x",
     "replaces": "1.0.x",
     "ultron": "1.0.x"
   },
   "devDependencies": {
-    "assume": "1.1.x",
+    "assume": "~1.4.1",
     "bigpipe": "bigpipe/bigpipe",
-    "istanbul": "0.3.x",
-    "mocha": "2.2.x",
-    "pre-commit": "1.0.x"
+    "istanbul": "~0.4.5",
+    "mocha": "~3.1.2",
+    "pre-commit": "~1.1.3"
   }
 }
