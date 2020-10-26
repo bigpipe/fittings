@@ -1,6 +1,6 @@
 # fittings
 
-[![From bigpipe.io][from]](http://bigpipe.io)[![Version npm][version]](http://browsenpm.org/package/fittings)[![Build Status][build]](https://travis-ci.org/bigpipe/fittings)[![Dependencies][david]](https://david-dm.org/bigpipe/fittings)[![Coverage Status][cover]](https://coveralls.io/r/bigpipe/fittings?branch=master)
+[![Version npm][version]](http://browsenpm.org/package/fittings)[![Build Status][build]](https://travis-ci.org/bigpipe/fittings)[![Dependencies][david]](https://david-dm.org/bigpipe/fittings)[![Coverage Status][cover]](https://coveralls.io/r/bigpipe/fittings?branch=master)
 
 [from]: https://img.shields.io/badge/from-bigpipe.io-9d8dff.svg?style=flat-square
 [version]: http://img.shields.io/npm/v/fittings.svg?style=flat-square
